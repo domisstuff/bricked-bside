@@ -1,1 +1,29 @@
-Hello.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Roblox Data Exporter</title>
+</head>
+<body>
+<h2>Roblox Data Exporter</h2>
+<button id="exportBtn">Export Data from Game</button>
+<div id="status"></div>
+
+<script>
+const exportBtn = document.getElementById("exportBtn");
+const status = document.getElementById("status");
+
+exportBtn.addEventListener("click", async () => {
+  status.textContent = "Exporting data...";
+  try {
+    const res = await fetch("/export", { method: "POST" });
+    const data = await res.json();
+    status.textContent = `Export finished! Total entries: ${data.total}`;
+  } catch (err) {
+    status.textContent = "Export failed.";
+    console.error(err);
+  }
+});
+</script>
+</body>
+</html>
