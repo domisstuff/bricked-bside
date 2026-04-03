@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>none</title>
-</head>
+<head><meta charset="UTF-8"><title>roblox export</title></head>
 <body>
-<button id="exportBtn">export</button>
+<button id="exportbtn">export</button>
 <div id="status"></div>
 
 <script>
-const exportBtn = document.getElementById("exportBtn");
-const status = document.getElementById("status");
+const b=document.getElementById("exportbtn")
+const s=document.getElementById("status")
 
-exportBtn.addEventListener("click", async () => {
-  status.textContent = "exporting";
-  try {
-    const res = await fetch("/export", { method: "POST" });
-    const data = await res.json();
-    status.textContent = `export finishe - total entries: ${data.total}`;
-  } catch (err) {
-    status.textContent = "export failed.";
-    console.error(err);
+b.addEventListener("click",async()=>{
+  s.textContent="exporting..."
+  try{
+    const r=await fetch("/api/export",{method:"post"})
+    const d=await r.json()
+    s.textContent=`export done - total: ${d.total}`
+  }catch(e){
+    s.textContent="export failed"
+    console.error(e)
   }
-});
+})
 </script>
 </body>
 </html>
