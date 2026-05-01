@@ -1,58 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Webcam View</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: black;
-      overflow: hidden;
+<meta charset="UTF-8">
+<title>Mini Browser</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #2c2f33;
     }
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+
+    .browser {
+        width: 90%;
+        height: 90vh;
+        margin: 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
     }
-    #overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 10;
+
+    .toolbar {
+        background: #202225;
+        padding: 10px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
     }
-  </style>
+
+    .toolbar button {
+        background: #5865f2;
+        border: none;
+        color: white;
+        padding: 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toolbar button:hover {
+        background: #4752c4;
+    }
+
+    .toolbar input {
+        flex: 1;
+        padding: 6px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+    }
+
+    iframe {
+        flex: 1;
+        border: none;
+    }
+</style>
 </head>
 <body>
 
-<div id="overlay">Click to enable webcam</div>
-<video id="video" autoplay playsinline></video>
+<div class="browser">
+    <div class="toolbar">
+        <button onclick="goBack()">←</button>
+        <button onclick="goForward()">→</button>
+        <button onclick="reloadPage()">⟳</button>
+        <input id="urlBar" type="text" placeholder="Enter URL..." />
+        <button onclick="loadPage()">Go</button>
+    </div>
+    <iframe id="viewer" src="https://example.com"></iframe>
+</div>
 
 <script>
-  const video = document.getElementById('video');
-  const overlay = document.getElementById('overlay');
+    const iframe = document.getElementById("viewer");
+    const urlBar = document.getElementById("urlBar");
 
-  overlay.addEventListener('click', async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
-      overlay.style.display = 'none';
-    } catch (err) {
-      overlay.textContent = 'Camera access denied or unavailable.';
-      console.error(err);
+    function formatURL(url) {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            return "https://" + url;
+        }
+        return url;
     }
-  });
+
+    function loadPage() {
+        const url = formatURL(urlBar.value);
+        iframe.src = url;
+    }
+
+    function goBack() {
+        iframe.contentWindow.history.back();
+    }
+
+    function goForward() {
+        iframe.contentWindow.history.forward();
+    }
+
+    function reloadPage() {
+        iframe.contentWindow.location.reload();
+    }
+
+    // Press Enter to load
+    urlBar.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            loadPage();
+        }
+    });
 </script>
 
 </body>
