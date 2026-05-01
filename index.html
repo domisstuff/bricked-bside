@@ -2,109 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mini Browser</title>
+<title>Download Hub</title>
+
 <style>
     body {
-        margin: 0;
         font-family: Arial, sans-serif;
-        background: #2c2f33;
-    }
-
-    .browser {
-        width: 90%;
-        height: 90vh;
-        margin: 20px auto;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .toolbar {
-        background: #202225;
-        padding: 10px;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .toolbar button {
-        background: #5865f2;
-        border: none;
+        background: #121212;
         color: white;
-        padding: 6px 10px;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: #1e1e1e;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .title {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+
+    .download-btn {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #4CAF50;
+        color: white;
+        text-decoration: none;
         border-radius: 5px;
-        cursor: pointer;
     }
 
-    .toolbar button:hover {
-        background: #4752c4;
-    }
-
-    .toolbar input {
-        flex: 1;
-        padding: 6px;
-        border-radius: 5px;
-        border: none;
-        outline: none;
-    }
-
-    iframe {
-        flex: 1;
-        border: none;
+    .download-btn:hover {
+        background: #45a049;
     }
 </style>
 </head>
+
 <body>
 
-<div class="browser">
-    <div class="toolbar">
-        <button onclick="goBack()">←</button>
-        <button onclick="goForward()">→</button>
-        <button onclick="reloadPage()">⟳</button>
-        <input id="urlBar" type="text" placeholder="Enter URL..." />
-        <button onclick="loadPage()">Go</button>
+<h1>Download Hub</h1>
+
+<div class="grid">
+
+    <!-- ITEM START -->
+    <div class="card">
+        <img src="https://via.placeholder.com/300x150" alt="Preview">
+        <div class="title">Example File</div>
+        <a class="download-btn" href="https://example.com/file.zip" target="_blank">
+            Download
+        </a>
     </div>
-    <iframe id="viewer" src="https://bricked.lol"></iframe>
+    <!-- ITEM END -->
+
+
+    <!-- COPY THIS BLOCK TO ADD MORE ↓ -->
+    <div class="card">
+        <img src="https://via.placeholder.com/300x150" alt="Preview">
+        <div class="title">Another File</div>
+        <a class="download-btn" href="https://example.com/another.zip" target="_blank">
+            Download
+        </a>
+    </div>
+    <!-- END COPY -->
+
 </div>
-
-<script>
-    const iframe = document.getElementById("viewer");
-    const urlBar = document.getElementById("urlBar");
-
-    function formatURL(url) {
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            return "https://" + url;
-        }
-        return url;
-    }
-
-    function loadPage() {
-        const url = formatURL(urlBar.value);
-        iframe.src = url;
-    }
-
-    function goBack() {
-        iframe.contentWindow.history.back();
-    }
-
-    function goForward() {
-        iframe.contentWindow.history.forward();
-    }
-
-    function reloadPage() {
-        iframe.contentWindow.location.reload();
-    }
-
-    // Press Enter to load
-    urlBar.addEventListener("keypress", function(e) {
-        if (e.key === "Enter") {
-            loadPage();
-        }
-    });
-</script>
 
 </body>
 </html>
